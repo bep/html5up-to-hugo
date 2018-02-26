@@ -14,3 +14,13 @@ The original themes are licensed with The Creative Commons Attribution 3.0 Licen
  cd exampleSite
  HUGO_THEME=lens hugo server
  ```
+
+
+ # Strategy
+
+* Put the common layouts into `template/layouts`
+* Put the specific (use same name to overwrite) templates inside `template/[theme]/layouts/`
+* We will probably need more templating support. Let us see.
+
+**And try to keep it as DRY as possible.**
+
