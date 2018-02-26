@@ -1,0 +1,16 @@
+name = "{{ .Name }}"
+license = "Creative Commons Attribution 3.0"
+licenselink = "https://github.com/bep/html5up-to-hugo/blob/master/LICENSE.txt"
+description = "{{ .Description }}"
+homepage = "https://github.com/bep/html5up-to-hugo/"
+tags = ["Responsive", "HTML5Up"]
+features = ["Responsive", "HTML5Up"]
+min_version = "0.36.1"
+
+[author]
+  name = "Bjørn Erik Pedersen"
+  homepage = "http://bep.is"
+
+[original]
+  name = "Editorial by HTML5 UP"
+  homepage = "https://html5up.net/"

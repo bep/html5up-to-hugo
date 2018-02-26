@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>{{ .Title | default .Site.Title }}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!--[if lte IE 8]><script src="{{ "assets/js/ie/html5shiv.js" | relURL }}"></script><![endif]-->
+		<link rel="stylesheet" href="{{ "assets/css/main.css" | relURL }}" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="{{ "assets/css/ie9.css" | relURL }}" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="{{ "assets/css/ie8.css"  | relURL }}" /><![endif]-->
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="main">
+				<div class="inner">
+					<header id="header">
+						<a href="index.html" class="logo">{{ (.Title | default .Site.Title) | markdownify }}</a>
+					</header>
+					{{block "main" .}}
+					{{ end }}
+				</div>
+			</div>
+		</div>
+		<script src="{{ "assets/js/jquery.min.js" | relURL }}"></script>
+		<script src="{{ "assets/js/skel.min.js" | relURL }}"></script>
+		<script src="{{ "assets/js/util.js" | relURL }}"></script>
+		<!--[if lte IE 8]><script src="{{ "assets/js/ie/respond.min.js" | relURL }}"></script><![endif]-->
+		<script src="{{ "assets/js/main.js" | relURL }}"></script>
+	</body>
+</html>
