@@ -1,16 +1,22 @@
 package main
 
 import (
-	"flag"
+	"bytes"
+	"io/ioutil"
+	"strings"
+	//"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 
-	"github.com/mholt/archiver"
+	"github.com/hacdias/fileutils"
+
+	"text/template"
 
 	"github.com/BurntSushi/toml"
+	"github.com/mholt/archiver"
 )
 
 var (
@@ -27,14 +33,19 @@ type config struct {
 }
 
 type theme struct {
-	Name string
+	Name        string
+	Description string
+}
+
+func (t theme) Title(in string) string {
+	return strings.Title(in)
 }
 
 func main() {
-	getCmd := flag.NewFlagSet("get", flag.ExitOnError)
+	//getCmd := flag.NewFlagSet("get", flag.ExitOnError)
 	args := os.Args
 
-	cmd := "get"
+	cmd := "build"
 	if len(args) > 1 {
 		cmd = args[1]
 		args = args[1:]
@@ -42,8 +53,9 @@ func main() {
 
 	switch cmd {
 	case "get":
-		getCmd.Parse(args)
 		failOnError(get)
+	case "build":
+		failOnError(build)
 	default:
 		fmt.Printf("%q is not valid command.\n", cmd)
 		os.Exit(2)
@@ -63,6 +75,72 @@ func get() error {
 	}
 
 	return b.get()
+}
+
+func build() error {
+	b, err := newThemeBuilder()
+	if err != nil {
+		return err
+	}
+
+	return b.build()
+}
+
+func (b *themeBuilder) build() error {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	buildPath := filepath.Join(pwd, "build")
+	templateDir := filepath.Join(pwd, "template")
+
+	if err := os.RemoveAll(buildPath); err != nil {
+		return err
+	}
+
+	for _, theme := range b.cfg.Themes {
+		themeBuildPath := filepath.Join(buildPath, theme.Name)
+		os.MkdirAll(themeBuildPath, 0755)
+
+		themeTOMLTpl, err := ioutil.ReadFile(filepath.Join(templateDir, "theme.toml"))
+		if err != nil {
+			return err
+		}
+
+		tpl, err := template.New("").Parse(string(themeTOMLTpl))
+		if err != nil {
+			return err
+		}
+
+		var out bytes.Buffer
+		if err := tpl.Execute(&out, theme); err != nil {
+			return err
+		}
+
+		ioutil.WriteFile(filepath.Join(themeBuildPath, "theme.toml"), out.Bytes(), 0755)
+
+		assetsPath := filepath.Join(themeBuildPath, "static", "assets")
+		srcAssetsPath := filepath.Join(pwd, "temp", "download", theme.Name, "assets")
+
+		layoutsPath := filepath.Join(themeBuildPath, "layouts")
+
+		os.MkdirAll(assetsPath, 0755)
+
+		if err := fileutils.CopyDir(filepath.Join(templateDir, "layouts"), layoutsPath); err != nil {
+			return err
+		}
+
+		for _, dirname := range []string{"css", "fonts", "js"} {
+			src := filepath.Join(srcAssetsPath, dirname)
+			destination := filepath.Join(assetsPath, dirname)
+			if err := fileutils.CopyDir(src, destination); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 func (b *themeBuilder) get() error {

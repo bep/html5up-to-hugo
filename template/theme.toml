@@ -1,4 +1,4 @@
-name = "{{ .Name }}"
+name = "{{ .Name | .Title }}"
 license = "Creative Commons Attribution 3.0"
 licenselink = "https://github.com/bep/html5up-to-hugo/blob/master/LICENSE.txt"
 description = "{{ .Description }}"
