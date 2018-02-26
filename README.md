@@ -10,6 +10,9 @@ The original themes are licensed with The Creative Commons Attribution 3.0 Licen
 # Build the Themes
 
 ```bash
+# Only needed once (or if a new theme is added etc.)
+go run main.go get
+
  go run main.go build
  cd exampleSite
  HUGO_THEME=lens hugo server
