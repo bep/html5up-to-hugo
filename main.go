@@ -45,6 +45,11 @@ func main() {
 	//getCmd := flag.NewFlagSet("get", flag.ExitOnError)
 	args := os.Args
 
+	b, err := newThemeBuilder()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	cmd := "build"
 	if len(args) > 1 {
 		cmd = args[1]
@@ -53,9 +58,9 @@ func main() {
 
 	switch cmd {
 	case "get":
-		failOnError(get)
+		failOnError(b.get)
 	case "build":
-		failOnError(build)
+		failOnError(b.build)
 	default:
 		fmt.Printf("%q is not valid command.\n", cmd)
 		os.Exit(2)
@@ -66,24 +71,6 @@ func failOnError(f func() error) {
 	if err := f(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func get() error {
-	b, err := newThemeBuilder()
-	if err != nil {
-		return err
-	}
-
-	return b.get()
-}
-
-func build() error {
-	b, err := newThemeBuilder()
-	if err != nil {
-		return err
-	}
-
-	return b.build()
 }
 
 func (b *themeBuilder) build() error {
@@ -127,8 +114,16 @@ func (b *themeBuilder) build() error {
 
 		os.MkdirAll(assetsPath, 0755)
 
+		// First copy the common base templates.
 		if err := fileutils.CopyDir(filepath.Join(templateDir, "layouts"), layoutsPath); err != nil {
 			return err
+		}
+
+		// Then overwrite with the specific theme templates.
+		if err := fileutils.CopyDir(filepath.Join(templateDir, theme.Name, "layouts"), layoutsPath); err != nil {
+			if !os.IsNotExist(err) {
+				return err
+			}
 		}
 
 		for _, dirname := range []string{"css", "fonts", "js"} {
