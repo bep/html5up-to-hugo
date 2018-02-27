@@ -1,9 +1,19 @@
 
 
 [[themes]]
+name = "phantom"
+description = "Responsive theme with a nice grid on the front page."
+
+[[themes]]
 name = "editorial"
 description = "Editorial Theme"
 
 [[themes]]
 name = "lens"
 description = "Photo gallery theme"
+
+[[themes]]
+name = "strongly-typed"
+description = "Types, types ..."
+
+

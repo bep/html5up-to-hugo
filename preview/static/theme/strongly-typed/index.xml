@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Demo</title>
+    <link>http://localhost:1313/theme/strongly-typed/</link>
+    <description>Recent content on The Demo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 26 Feb 2018 23:12:18 +0100</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/theme/strongly-typed/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First Post</title>
+      <link>http://localhost:1313/theme/strongly-typed/posts/first-post/</link>
+      <pubDate>Mon, 26 Feb 2018 23:12:18 +0100</pubDate>
+      
+      <guid>http://localhost:1313/theme/strongly-typed/posts/first-post/</guid>
+      <description>Lorem markdownum desertum senectus relinquere et casus scit lectusque iussisque Neptunius. Cytoriaco proles Hector carpebat vulnere miserabile amor Peleus; forsitan. Aliter auras portante albis dextera caelesti Pellaeus.
+Anguem nec obnoxius haut! Ipsa ille cum, Achillem elusam gaudetque iam? Sed tibi ante, quoque, loqui utere nigris ad simul. Et veniendi mediis cantu et duo. Concilio pignora mentis lunaribus me Hector nec tantum fateri invitat ossa, facta.
+ Aesonis debes. Hederae nudaeque Peleus corpora reguntur donec in nullique quodcumque tota, ter, hac sed Poeante cubitique.</description>
+    </item>
+    
+  </channel>
+</rss>

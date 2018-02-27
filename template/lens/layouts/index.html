@@ -1,0 +1,10 @@
+{{ define "main" }}
+<section id="thumbnails">
+	{{ range .Site.RegularPages }}
+	<article>
+		<a class="thumbnail" href="images/fulls/01.jpg" data-position="left center"><img src="" alt="" /></a>
+		<h2>{{ .Title }}</h2>
+		<p>{{ .Description }}</p>
+	</article>
+	{{ end }}
+{{ end }}

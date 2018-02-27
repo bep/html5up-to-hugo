@@ -3,4 +3,4 @@ languageCode = "en-us"
 title = "Preview Themes"
 
 themesdir = "../build"
-theme = "lens"
+theme = "phantom"

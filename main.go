@@ -29,7 +29,8 @@ var (
 )
 
 type themeBuilder struct {
-	cfg config
+	clean bool
+	cfg   config
 }
 
 type config struct {
@@ -87,8 +88,10 @@ func (b *themeBuilder) build() error {
 	buildPath := filepath.Join(pwd, "build")
 	templateDir := filepath.Join(pwd, "template")
 
-	if err := os.RemoveAll(buildPath); err != nil {
-		return err
+	if b.clean {
+		if err := os.RemoveAll(buildPath); err != nil {
+			return err
+		}
 	}
 
 	for _, theme := range b.cfg.Themes {
@@ -153,8 +156,10 @@ func (b *themeBuilder) preview() error {
 	buildPath := filepath.Join(pwd, "preview")
 	templateDir := filepath.Join(pwd, "template", "preview")
 
-	if err := os.RemoveAll(buildPath); err != nil {
-		return err
+	if b.clean {
+		if err := os.RemoveAll(buildPath); err != nil {
+			return err
+		}
 	}
 
 	staticDir := filepath.Join(buildPath, "static")
@@ -182,7 +187,7 @@ weight: %d
 `
 
 	for i, theme := range b.cfg.Themes {
-		bundleDir := filepath.Join(contentDir, "theme", theme.Name)
+		bundleDir := filepath.Join(contentDir, "sect", theme.Name)
 		if err := os.MkdirAll(bundleDir, 0777); err != nil {
 			return err
 		}
