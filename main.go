@@ -3,12 +3,16 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
+	"path"
 	"strings"
 	//"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gohugoio/hugo/commands"
+
 	"path/filepath"
 
 	"github.com/hacdias/fileutils"
@@ -61,6 +65,7 @@ func main() {
 		failOnError(b.get)
 	case "build":
 		failOnError(b.build)
+		failOnError(b.preview)
 	default:
 		fmt.Printf("%q is not valid command.\n", cmd)
 		os.Exit(2)
@@ -138,6 +143,59 @@ func (b *themeBuilder) build() error {
 	return nil
 }
 
+func (b *themeBuilder) preview() error {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	exampleSite := filepath.Join(pwd, "exampleSite")
+	buildPath := filepath.Join(pwd, "preview")
+	templateDir := filepath.Join(pwd, "template", "preview")
+
+	if err := os.RemoveAll(buildPath); err != nil {
+		return err
+	}
+
+	staticDir := filepath.Join(buildPath, "static")
+	contentDir := filepath.Join(buildPath, "content")
+
+	os.MkdirAll(staticDir, 0755)
+	os.MkdirAll(contentDir, 0755)
+
+	for _, theme := range b.cfg.Themes {
+		if err := buildHugoSite(exampleSite, staticDir, theme.Name); err != nil {
+			return err
+		}
+	}
+
+	if err := fileutils.CopyFile(filepath.Join(templateDir, "config.toml"), filepath.Join(buildPath, "config.toml")); err != nil {
+		return err
+	}
+
+	contentTpl := `---
+title: %q
+description: %q
+weight: %d
+---
+
+`
+
+	for i, theme := range b.cfg.Themes {
+		bundleDir := filepath.Join(contentDir, "theme", theme.Name)
+		if err := os.MkdirAll(bundleDir, 0777); err != nil {
+			return err
+		}
+
+		if err := ioutil.WriteFile(filepath.Join(bundleDir, "index.md"),
+			[]byte(fmt.Sprintf(contentTpl, strings.Title(theme.Name), theme.Description, i+1)), 0755); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (b *themeBuilder) get() error {
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -198,4 +256,29 @@ func readConfig() (config, error) {
 
 	return conf, err
 
+}
+
+func buildHugoSite(source, destination, theme string) error {
+	defer commands.Reset()
+
+	destination = path.Join(destination, "theme", theme)
+
+	baseURL := fmt.Sprintf("http://localhost:1313/theme/%s/", theme)
+	flags := []string{"--quiet",
+		fmt.Sprintf("--baseURL=%s", baseURL),
+		fmt.Sprintf("--source=%s", source),
+		fmt.Sprintf("--destination=%s", destination),
+		fmt.Sprintf("--theme=%s", theme)}
+	os.Args = []string{os.Args[0]}
+
+	if err := commands.HugoCmd.ParseFlags(flags); err != nil {
+		log.Fatal(err)
+	}
+
+	if _, err := commands.HugoCmd.ExecuteC(); err != nil {
+		return err
+
+	}
+
+	return nil
 }

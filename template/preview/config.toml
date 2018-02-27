@@ -1,0 +1,6 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Preview Themes"
+
+themesdir = "../build"
+theme = "lens"
