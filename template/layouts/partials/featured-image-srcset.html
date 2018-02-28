@@ -1,0 +1,12 @@
+{{ with .page }}
+{{ $anchor := .Params.featured_anchor | default "smart" }}
+{{ $img := ( .Resources.ByType "image").GetMatch "*featured*" }}
+{{ with $img }}
+{{ $width := $.width | default 640 }}
+{{ $height := $.height | default 320 }}
+{{ $widthSmall := (div $width 2) }}
+{{ $big := .Fill (printf "%dx%d %s" $width $height $anchor) }}
+{{ $small := $big.Resize (printf "%dx" $widthSmall) }}
+<img srcset="{{ $small.RelPermalink }} 1x, {{ $big.RelPermalink }} 2x" alt="{{ $img.Title }}" width="{{ $big.Width }}"  class="">
+{{ end }}
+{{ end }}

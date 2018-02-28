@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://localhost:1313/theme/lens/posts/first-post/</loc>
+    <lastmod>2018-02-26T23:12:18+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/theme/lens/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/theme/lens/posts/</loc>
+    <lastmod>2018-02-26T23:12:18+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/theme/lens/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/theme/lens/</loc>
+    <lastmod>2018-02-26T23:12:18+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

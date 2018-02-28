@@ -186,6 +186,20 @@ weight: %d
 
 `
 
+	if err := ioutil.WriteFile(filepath.Join(contentDir, "_index.md"), []byte(`---
+title: "Theme Previews"
+---
+
+This is a work in progress. The goal is to create unified set of Hugo themes from https://html5up.net/
+
+`), 0755); err != nil {
+		return err
+	}
+
+	if err := fileutils.CopyFile(filepath.Join(templateDir, "images", "post-1.jpg"), filepath.Join(contentDir, "featured.jpg")); err != nil {
+		return err
+	}
+
 	for i, theme := range b.cfg.Themes {
 		bundleDir := filepath.Join(contentDir, "sect", theme.Name)
 		if err := os.MkdirAll(bundleDir, 0777); err != nil {
@@ -196,6 +210,12 @@ weight: %d
 			[]byte(fmt.Sprintf(contentTpl, strings.Title(theme.Name), theme.Description, i+1)), 0755); err != nil {
 			return err
 		}
+
+		image := filepath.Join(templateDir, "images", fmt.Sprintf("post-%d.jpg", i+1))
+		if err := fileutils.CopyFile(image, filepath.Join(bundleDir, "featured.jpg")); err != nil {
+			return err
+		}
+
 	}
 
 	return nil
@@ -269,7 +289,7 @@ func buildHugoSite(source, destination, theme string) error {
 	destination = path.Join(destination, "theme", theme)
 
 	baseURL := fmt.Sprintf("http://localhost:1313/theme/%s/", theme)
-	flags := []string{"--quiet",
+	flags := []string{"--quiet", "--gc",
 		fmt.Sprintf("--baseURL=%s", baseURL),
 		fmt.Sprintf("--source=%s", source),
 		fmt.Sprintf("--destination=%s", destination),
