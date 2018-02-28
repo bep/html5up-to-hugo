@@ -13,11 +13,18 @@
 		<div id="wrapper">
 			<div id="main">
 				<div class="inner">
-					<header id="header">
-						<a href="index.html" class="logo">{{ (.Title | default .Site.Title) | markdownify }}</a>
-					</header>
-					{{block "main" .}}
-					{{ end }}
+					{{ block "header" . }}{{ partial "section/header" . }}{{ end  }}
+					{{ block "banner" . }}{{ partial "section/banner" . }}{{ end  }}
+					{{ block "featured-posts" . }}{{ partial "section/featured-posts" . }}{{ end  }}
+					{{ block "features" . }}{{ partial "section/features" . }}{{ end  }}
+					{{ block "latest-posts-more" . }}{{ partial "section/latest-posts-more" . }}{{ end  }}
+					{{ block "footer" . }}{{ partial "section/footer" . }}{{ end  }}
+					{{ block "site-title" . }}{{ partial "section/site-title" . }}{{ end  }}
+					{{ block "menu" . }}{{ partial "section/menu" . }}{{ end  }}
+					{{ block "social-bar" . }}{{ partial "section/social-bar" . }}{{ end  }}
+					{{ block "contact" . }}{{ partial "section/contact" . }}{{ end  }}
+					{{ block "search" . }}{{ partial "section/search" . }}{{ end  }}
+			
 				</div>
 			</div>
 		</div>

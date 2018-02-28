@@ -128,7 +128,7 @@ func (b *themeBuilder) build() error {
 		}
 
 		// Then overwrite with the specific theme templates.
-		if err := fileutils.CopyDir(filepath.Join(templateDir, theme.Name, "layouts"), layoutsPath); err != nil {
+		if err := fileutils.CopyDir(filepath.Join(templateDir, "themes", theme.Name, "layouts"), layoutsPath); err != nil {
 			if !os.IsNotExist(err) {
 				return err
 			}
